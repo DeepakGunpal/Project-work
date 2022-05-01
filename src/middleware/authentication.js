@@ -20,6 +20,11 @@ const authentication = async function (req, res, next) {
         if (validmail) {
             return res.status(400).send({ status: false, msg: "email is not valid" })
         }
+        validpassword = ! /^[a-zA-Z0-9!@#$%^&*]{6,16}$/.test(password)
+        if (validpassword) {
+            return res.status(400).send({ status: false, msg: "password is not valid" })
+        }
+
 
         //assinging a headers token to token variable
         let token = req.headers["x-Api-Key"];
@@ -50,7 +55,7 @@ const authentication = async function (req, res, next) {
             return res.status(400).send({ status: false, msg: "Authentication failed" });
         }
         // calling next function
-        next()
+        next();
 
     } catch (error) {
         // return a error if any case fail on try block 

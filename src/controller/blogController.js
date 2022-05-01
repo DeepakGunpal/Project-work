@@ -166,16 +166,11 @@ const updatedModel = async function (req, res) {
     }
     //assing a tags in a body to tags in a blog
     if (req.body.tags) {
-      let temp1 = blog.tags
-      temp1.push(req.body.tags)
-      blog.tags = temp1
-
+      blog.tags.push(...req.body.tags)
     }
     //assing a subcategory in a body to subcategory in a blog
     if (req.body.subcategory) {
-      let temp2 = blog.subcategory
-      temp2.push(req.body.subcategory)
-      blog.subcategory = temp2
+      blog.subcategory.push(...req.body.subcategory)
     }
     //save the upadated values 
     blog.save()
@@ -220,6 +215,9 @@ const deleteblog = async function (req, res) {
   try {
     //assing blogid in a params to id variable
     const id = req.params.blogId
+    if(id==0){
+      return res.send({msg:"not found"})
+    }
     // finding a blogid with isDeleted: false condition in blogModel
     const blog = await blogModel.findOne({ $and: [{ _id: id }, { isDeleted: false }] })
     //if blog is present and update a blog and set true to isDeleted and new Date deletedAt

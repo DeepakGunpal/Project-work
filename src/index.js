@@ -21,7 +21,17 @@ mongoose.connect(
   .then(() => console.log("mongoDB Connected"))//return fullfiled promise
   .catch(err => console.log(err))//return rejected promise
 
-app.use("/", route)
+app.use("/", route);
+
+app.use(async (err, req, res, next) => {
+  if(err){
+    res.status(500).send({ status: false, msg: error.message });
+  }
+  // if (!errorHandler.isTrustedError(err)) {
+  //   next(err);
+  // }
+  // await errorHandler.handleError(err);
+ });
 
 //port is two-way communication link between two programs running on the network
 app.listen(port, () => {
